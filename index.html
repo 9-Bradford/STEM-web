@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Year 9 Bradford — STEM Day 2026 | Phone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════
+   VARIABLES
+════════════════════════════════════════ */
+:root {
+  --bg: #020810;
+  --neon-blue:   #00d4ff;
+  --neon-green:  #00ff88;
+  --neon-purple: #bf00ff;
+  --neon-orange: #ff6b00;
+  --text:     #e8f4ff;
+  --text-dim: #7a9ab8;
+  --border: rgba(0,212,255,0.15);
+  --glow-blue:   0 0 20px rgba(0,212,255,0.4), 0 0 60px rgba(0,212,255,0.1);
+  --glow-green:  0 0 20px rgba(0,255,136,0.4), 0 0 60px rgba(0,255,136,0.1);
+  --glow-purple: 0 0 20px rgba(191,0,255,0.4), 0 0 60px rgba(191,0,255,0.1);
+}
+
+/* ════════════════════════════════════════
+   RESET & BASE
+════════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--text); font-family:'Exo 2',sans-serif; overflow-x:hidden; min-height:100vh; }
+
+/* Animated grid */
+body::before {
+  content:''; position:fixed; inset:0;
+  background-image: linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px), linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);
+  background-size:60px 60px; z-index:0; pointer-events:none;
+}
+body::after {
+  content:''; position:fixed; inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,60,120,0.25) 0%,transparent 70%);
+  z-index:0; pointer-events:none;
+}
+.scanlines {
+  position:fixed; inset:0; z-index:1; pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);
+}
+
+/* ════════════════════════════════════════
+   TOP NAV
+════════════════════════════════════════ */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:300;
+  background:rgba(2,8,16,0.88); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  height:52px; padding:0 16px;
+}
+.nav-logo { font-family:'Orbitron',monospace; font-size:10px; font-weight:700; color:var(--neon-blue); letter-spacing:3px; text-transform:uppercase; white-space:nowrap; }
+.nav-logo span { color:var(--text-dim); font-weight:400; }
+
+.nav-tabs { display:none !important; }
+.nav-tabs li button {
+  background:none; border:none; font-family:'Exo 2',sans-serif;
+  font-size:12px; font-weight:600; letter-spacing:2px; text-transform:uppercase;
+  color:var(--text-dim); padding:8px 20px; cursor:pointer; border-radius:4px;
+  transition:all 0.3s; position:relative; white-space:nowrap;
+}
+.nav-tabs li button::after { content:''; position:absolute; bottom:0; left:50%; right:50%; height:2px; transition:all 0.3s; border-radius:2px; }
+.nav-tabs li button:hover { color:var(--text); background:rgba(0,212,255,0.06); }
+.nav-tabs li button.active { color:var(--neon-blue); background:rgba(0,212,255,0.08); }
+.nav-tabs li button.active::after { background:var(--neon-blue); left:20%; right:20%; box-shadow:var(--glow-blue); }
+.nav-tabs li button.active[data-tab="spider"] { color:var(--neon-orange); background:rgba(255,107,0,0.08); }
+.nav-tabs li button.active[data-tab="spider"]::after { background:var(--neon-orange); box-shadow:0 0 20px rgba(255,107,0,0.4); }
+.nav-tabs li button.active[data-tab="solar"]  { color:var(--neon-green);  background:rgba(0,255,136,0.08); }
+.nav-tabs li button.active[data-tab="solar"]::after  { background:var(--neon-green);  box-shadow:var(--glow-green); }
+
+/* ════════════════════════════════════════
+   MOBILE BOTTOM TAB BAR (hidden on desktop)
+════════════════════════════════════════ */
+.mobile-tabs {
+  display:flex;
+  position:fixed; bottom:0; left:0; right:0; z-index:300;
+  height:60px; list-style:none;
+  background:rgba(2,8,16,0.97); backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+}
+.mobile-tabs li { flex:1; }
+.mobile-tabs li button {
+  width:100%; height:100%; background:none; border:none;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+  cursor:pointer; transition:all 0.2s; position:relative;
+}
+.mobile-tabs li button::before {
+  content:''; position:absolute; top:0; left:20%; right:20%; height:2px;
+  border-radius:0 0 3px 3px; opacity:0; transition:opacity 0.25s;
+}
+.mobile-tabs li button.active::before { opacity:1; }
+.mobile-tabs li:nth-child(1) button::before { background:var(--neon-blue); }
+.mobile-tabs li:nth-child(2) button::before { background:var(--neon-orange); }
+.mobile-tabs li:nth-child(3) button::before { background:var(--neon-green); }
+.tab-icon  { font-size:22px; line-height:1; }
+.tab-label { font-family:'Orbitron',monospace; font-size:7px; letter-spacing:1px; text-transform:uppercase; color:var(--text-dim); transition:color 0.2s; }
+.mobile-tabs li:nth-child(1) button.active .tab-label { color:var(--neon-blue); }
+.mobile-tabs li:nth-child(2) button.active .tab-label { color:var(--neon-orange); }
+.mobile-tabs li:nth-child(3) button.active .tab-label { color:var(--neon-green); }
+
+/* ════════════════════════════════════════
+   SECTIONS
+════════════════════════════════════════ */
+section { position:relative; z-index:2; display:none; }
+section.active { display:block; }
+
+/* ════════════════════════════════════════
+   HOME HERO
+════════════════════════════════════════ */
+#home {
+  min-height:100vh; display:none;
+  flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:72px 20px 80px;
+  gap:0;
+}
+#home.active { display:flex; }
+
+.hero-eyebrow {
+  font-family:'Orbitron',monospace; font-size:10px; letter-spacing:6px;
+  color:var(--neon-blue); text-transform:uppercase; margin-bottom:28px;
+  opacity:0.8;
+}
+.hero-title {
+  font-family:'Orbitron',monospace; font-size:clamp(30px,10vw,52px);
+  font-weight:900; line-height:0.95; margin-bottom:0;
+}
+.hero-title .line1 {
+  display:block;
+  background:linear-gradient(90deg,var(--neon-blue),#fff,var(--neon-blue));
+  background-size:200%; -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  animation:shimmer 4s linear infinite;
+}
+.hero-title .line2 {
+  display:block; color:var(--text-dim); font-size:0.38em;
+  letter-spacing:8px; margin-top:14px; font-weight:400;
+}
+.hero-subtitle {
+  font-size:clamp(14px,2vw,17px); color:var(--text-dim);
+  max-width:400px; line-height:1.7; margin:32px auto 52px;
+  font-weight:300; font-style:italic;
+}
+.hero-subtitle strong { color:var(--text); font-style:normal; font-weight:600; }
+
+.project-cards {
+  display:grid; grid-template-columns:1fr;
+  gap:12px; max-width:480px; width:100%; margin-bottom:36px;
+}
+.proj-card {
+  border-radius:14px; padding:15px 18px; border:1px solid; cursor:pointer;
+  transition:all 0.35s; position:relative; overflow:hidden;
+  display:flex; flex-direction:row; align-items:center; gap:14px; text-align:left;
+}
+.proj-card::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity 0.35s; border-radius:16px; }
+.proj-card:hover::before { opacity:1; }
+.proj-card:hover { transform:translateY(-4px); }
+.proj-card.spider { border-color:rgba(255,107,0,0.3); background:rgba(255,107,0,0.04); }
+.proj-card.solar  { border-color:rgba(0,255,136,0.3);  background:rgba(0,255,136,0.04); }
+.proj-card.spider::before { background:radial-gradient(ellipse at 50% 100%,rgba(255,107,0,0.12) 0%,transparent 70%); }
+.proj-card.solar::before  { background:radial-gradient(ellipse at 50% 100%,rgba(0,255,136,0.12) 0%,transparent 70%); }
+.proj-card:hover.spider { border-color:rgba(255,107,0,0.65); box-shadow:0 0 40px rgba(255,107,0,0.15); }
+.proj-card:hover.solar  { border-color:rgba(0,255,136,0.65);  box-shadow:0 0 40px rgba(0,255,136,0.15); }
+.proj-card-icon { font-size:30px; flex-shrink:0; display:block; margin-bottom:0; }
+.proj-card-body { flex:1; }
+.proj-card-title {
+  font-family:'Orbitron',monospace; font-size:12px; font-weight:700;
+  letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;
+}
+.proj-card.spider .proj-card-title { color:var(--neon-orange); }
+.proj-card.solar  .proj-card-title { color:var(--neon-green); }
+.proj-card-desc {
+  font-size:11px; color:var(--text-dim); line-height:1.7;
+  letter-spacing:0.5px;
+}
+.proj-card-arrow { display:block; font-size:20px; opacity:0.35; flex-shrink:0; margin-left:auto; }
+
+.teacher-badge {
+  display:inline-flex; align-items:center; gap:12px;
+  background:rgba(255,255,255,0.03); border:1px solid var(--border);
+  border-radius:50px; padding:11px 26px;
+}
+.teacher-badge .dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--neon-green); box-shadow:0 0 12px var(--neon-green);
+  animation:pulse 2s ease-in-out infinite; flex-shrink:0;
+}
+.teacher-badge span { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); }
+.teacher-badge strong { color:var(--text); }
+
+/* ════════════════════════════════════════
+   PROJECT HERO BANNER
+════════════════════════════════════════ */
+.proj-hero-banner {
+  width:100%; min-height:100vh; opacity:1 !important;
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+  padding:62px 20px 80px;
+}
+.spider-banner {
+  background: radial-gradient(ellipse 70% 80% at 80% 50%,rgba(255,107,0,0.13) 0%,transparent 65%),
+              radial-gradient(ellipse 40% 60% at 20% 80%,rgba(255,107,0,0.07) 0%,transparent 60%);
+}
+.spider-banner::before { content:''; position:absolute; inset:0; z-index:0; background:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(255,107,0,0.03) 40px,rgba(255,107,0,0.03) 41px); }
+.spider-banner::after  { content:''; position:absolute; bottom:0;left:0;right:0;height:1px;z-index:3; background:linear-gradient(90deg,transparent,rgba(255,107,0,0.5),transparent); }
+.solar-banner {
+  background: radial-gradient(ellipse 60% 70% at 75% 40%,rgba(0,255,136,0.12) 0%,transparent 65%),
+              radial-gradient(ellipse 30% 50% at 15% 70%,rgba(0,255,136,0.07) 0%,transparent 60%);
+}
+.solar-banner::before  { content:''; position:absolute; inset:0; z-index:0; background:repeating-linear-gradient(30deg,transparent,transparent 40px,rgba(0,255,136,0.02) 40px,rgba(0,255,136,0.02) 41px); }
+.solar-banner::after   { content:''; position:absolute; bottom:0;left:0;right:0;height:1px;z-index:3; background:linear-gradient(90deg,transparent,rgba(0,255,136,0.5),transparent); }
+.hand-banner {
+  background: radial-gradient(ellipse 65% 75% at 78% 45%,rgba(191,0,255,0.13) 0%,transparent 65%),
+              radial-gradient(ellipse 35% 55% at 18% 75%,rgba(191,0,255,0.07) 0%,transparent 60%);
+}
+.hand-banner::before   { content:''; position:absolute; inset:0; z-index:0; background:repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(191,0,255,0.03) 60px,rgba(191,0,255,0.03) 61px),repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(191,0,255,0.03) 60px,rgba(191,0,255,0.03) 61px); }
+.hand-banner::after    { content:''; position:absolute; bottom:0;left:0;right:0;height:1px;z-index:3; background:linear-gradient(90deg,transparent,rgba(191,0,255,0.5),transparent); }
+
+.proj-hero-inner { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; text-align:center; gap:0; max-width:480px; width:100%; margin:0 auto; }
+
+.proj-hero-number { font-family:'Orbitron',monospace; font-size:10px; letter-spacing:4px; text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.proj-hero-number::after { content:''; flex:1; max-width:70px; height:1px; }
+.spider-banner .proj-hero-number { color:var(--neon-orange); }
+.spider-banner .proj-hero-number::after { background:rgba(255,107,0,0.5); }
+.solar-banner  .proj-hero-number { color:var(--neon-green); }
+.solar-banner  .proj-hero-number::after { background:rgba(0,255,136,0.5); }
+.hand-banner   .proj-hero-number { color:var(--neon-purple); }
+.hand-banner   .proj-hero-number::after { background:rgba(191,0,255,0.5); }
+
+.proj-hero-title { font-family:'Orbitron',monospace; font-size:clamp(34px,10vw,52px); font-weight:900; line-height:1.0; margin-bottom:8px; color:#fff; }
+.spider-banner .proj-hero-title { text-shadow:0 0 40px rgba(255,107,0,0.5); }
+.solar-banner  .proj-hero-title { text-shadow:0 0 40px rgba(0,255,136,0.5); }
+.hand-banner   .proj-hero-title { text-shadow:0 0 40px rgba(191,0,255,0.5); }
+
+.proj-hero-sub { font-family:'Orbitron',monospace; font-size:clamp(9px,1.5vw,13px); letter-spacing:4px; text-transform:uppercase; margin-bottom:22px; }
+.spider-banner .proj-hero-sub { color:var(--neon-orange); }
+.solar-banner  .proj-hero-sub { color:var(--neon-green); }
+.hand-banner   .proj-hero-sub { color:var(--neon-purple); }
+
+.proj-hero-desc { font-size:clamp(13px,1.8vw,16px); color:var(--text-dim); line-height:1.8; margin-bottom:28px; max-width:460px; }
+
+.proj-hero-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px; justify-content:center; }
+.tech-pill { font-family:'Orbitron',monospace; font-size:9px; letter-spacing:1px; font-weight:700; padding:5px 12px; border-radius:100px; border:1px solid; text-transform:uppercase; white-space:nowrap; }
+.spider-pill { color:var(--neon-orange); border-color:rgba(255,107,0,0.4); background:rgba(255,107,0,0.07); }
+.solar-pill  { color:var(--neon-green);  border-color:rgba(0,255,136,0.4);  background:rgba(0,255,136,0.07); }
+.hand-pill   { color:var(--neon-purple); border-color:rgba(191,0,255,0.4);  background:rgba(191,0,255,0.07); }
+
+.proj-hero-stats { display:flex; gap:20px; justify-content:center; }
+.proj-hero-stat-num { font-family:'Orbitron',monospace; font-size:clamp(22px,4vw,30px); font-weight:900; display:block; line-height:1; }
+.spider-banner .proj-hero-stat-num { color:var(--neon-orange); text-shadow:0 0 15px rgba(255,107,0,0.5); }
+.solar-banner  .proj-hero-stat-num { color:var(--neon-green);  text-shadow:0 0 15px rgba(0,255,136,0.5); }
+.hand-banner   .proj-hero-stat-num { color:var(--neon-purple); text-shadow:0 0 15px rgba(191,0,255,0.5); }
+.proj-hero-stat-label { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-top:4px; display:block; }
+
+/* Right icon */
+.proj-hero-right { display:flex; align-items:center; justify-content:center; order:1; margin-bottom:20px; }
+.proj-hero-icon-wrap { position:relative; display:flex; align-items:center; justify-content:center; width:160px; height:160px; }
+.big-icon { font-size:72px; position:relative; z-index:2; animation:float 5s ease-in-out infinite; filter:drop-shadow(0 0 30px currentColor); }
+.spider-banner .big-icon { color:var(--neon-orange); }
+.solar-banner  .big-icon { color:var(--neon-green); }
+.hand-banner   .big-icon { color:var(--neon-purple); }
+.orbit-ring { position:absolute; border-radius:50%; border:1px solid; top:50%; left:50%; transform:translate(-50%,-50%); animation:ringPulse 3s ease-in-out infinite; }
+.spider-banner .orbit-ring { border-color:rgba(255,107,0,0.2); }
+.solar-banner  .orbit-ring { border-color:rgba(0,255,136,0.2); }
+.hand-banner   .orbit-ring { border-color:rgba(191,0,255,0.2); }
+.orbit-ring:nth-child(1) { width:110px; height:110px; }
+.orbit-ring:nth-child(2) { width:150px; height:150px; animation-delay:.8s; opacity:.6; }
+.orbit-ring:nth-child(3) { width:185px; height:185px; animation-delay:1.6s; opacity:.3; }
+
+.scroll-hint { display:none; position:absolute; bottom:28px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:5px; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--text-dim); animation:bounce 2s ease-in-out infinite; z-index:4; }
+.scroll-hint::after { content:'↓'; font-size:14px; }
+
+/* Corner decorations */
+.corner-deco { display:none; }
+.corner-deco.tl { top:12px; left:12px; border-top:2px solid; border-left:2px solid; }
+.corner-deco.tr { top:12px; right:12px; border-top:2px solid; border-right:2px solid; }
+.corner-deco.bl { bottom:12px; left:12px; border-bottom:2px solid; border-left:2px solid; }
+.corner-deco.br { bottom:12px; right:12px; border-bottom:2px solid; border-right:2px solid; }
+
+/* ════════════════════════════════════════
+   PROJECT CONTENT AREA
+════════════════════════════════════════ */
+.project-page { padding:26px 16px 90px; max-width:1060px; margin:0 auto; }
+
+.spider-color { color:var(--neon-orange); }
+.solar-color  { color:var(--neon-green); }
+
+.spider-accent .info-block::before { background:var(--neon-orange); }
+.solar-accent  .info-block::before { background:var(--neon-green); }
+.spider-accent .step-num   { color:var(--neon-orange); border-color:rgba(255,107,0,0.4); }
+.spider-accent .step-title { color:var(--neon-orange); }
+.solar-accent  .step-num   { color:var(--neon-green);  border-color:rgba(0,255,136,0.4); }
+.solar-accent  .step-title { color:var(--neon-green); }
+
+.info-grid { display:grid; grid-template-columns:1fr; gap:10px; margin-bottom:0; }
+.info-block { background:rgba(255,255,255,0.025); border:1px solid var(--border); border-radius:14px; padding:22px 18px 22px 20px; position:relative; overflow:hidden; transition:border-color 0.25s, transform 0.25s; }
+.info-block::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; border-radius:3px 0 0 3px; }
+.info-block:hover { border-color:rgba(255,255,255,0.12); transform:translateY(-2px); }
+.info-block-title { font-family:'Orbitron',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.info-block-title .icon { font-size:15px; }
+.info-block p { font-size:13px; line-height:1.8; color:var(--text-dim); }
+.info-block p strong { color:var(--text); font-weight:600; }
+
+.steps { margin-bottom:0; }
+.step { display:flex; gap:16px; margin-bottom:0; position:relative; padding:18px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.step:last-child { border-bottom:none; padding-bottom:0; }
+.step:first-child { padding-top:0; }
+.step-num { width:36px; height:36px; border-radius:50%; border:1px solid; display:flex; align-items:center; justify-content:center; font-family:'Orbitron',monospace; font-size:11px; font-weight:700; flex-shrink:0; margin-top:2px; }
+.step-body { flex:1; }
+.step-title { font-size:14px; font-weight:600; margin-bottom:5px; }
+.step-desc  { font-size:13px; color:var(--text-dim); line-height:1.72; }
+
+.applications-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:0; }
+.app-item { display:flex; align-items:flex-start; gap:11px; padding:15px 13px; border-radius:12px; background:rgba(255,255,255,0.025); border:1px solid var(--border); transition:all 0.25s; }
+.app-item:hover { border-color:rgba(255,255,255,0.1); transform:translateY(-2px); }
+.app-icon  { font-size:22px; flex-shrink:0; margin-top:1px; }
+.app-label { font-size:12px; font-weight:700; margin-bottom:3px; color:var(--text); }
+.app-desc  { font-size:11px; color:var(--text-dim); line-height:1.5; }
+
+.skills-section { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:0; }
+.skill-item { background:rgba(255,255,255,0.025); border:1px solid var(--border); border-radius:12px; padding:20px 12px; text-align:center; transition:all 0.3s; }
+.skill-item:hover { transform:translateY(-3px); }
+.spider-accent .skill-item:hover { border-color:rgba(255,107,0,0.3); }
+.solar-accent  .skill-item:hover { border-color:rgba(0,255,136,0.3); }
+.skill-icon { font-size:28px; margin-bottom:8px; }
+.skill-name { font-family:'Orbitron',monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); }
+
+/* ════════════════════════════════════════
+   COLLAPSIBLE SECTIONS
+════════════════════════════════════════ */
+.collapse-section { margin-bottom:10px; }
+
+.collapse-header {
+  display:flex; align-items:center; justify-content:space-between;
+  cursor:pointer; padding:14px 16px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:14px;
+  transition:all 0.28s;
+  user-select:none; -webkit-user-select:none;
+  position:relative; overflow:hidden;
+}
+.collapse-header::before {
+  content:''; position:absolute;
+  left:0; top:0; bottom:0; width:3px;
+  border-radius:14px 0 0 14px;
+  opacity:0; transition:opacity 0.28s;
+}
+.spider-accent .collapse-header::before { background:var(--neon-orange); }
+.solar-accent  .collapse-header::before { background:var(--neon-green); }
+.hand-accent   .collapse-header::before { background:var(--neon-purple); }
+.collapse-header:hover::before, .collapse-header.open::before { opacity:1; }
+
+.collapse-header:hover { background:rgba(255,255,255,0.055); border-color:rgba(255,255,255,0.14); }
+.collapse-header.open { border-radius:14px 14px 0 0; border-bottom-color:transparent; }
+
+.spider-accent .collapse-header.open { background:rgba(255,107,0,0.07); border-color:rgba(255,107,0,0.35); }
+.solar-accent  .collapse-header.open { background:rgba(0,255,136,0.07);  border-color:rgba(0,255,136,0.35); }
+
+.collapse-header-left { display:flex; align-items:center; gap:14px; }
+.collapse-header-icon { font-size:20px; flex-shrink:0; }
+.collapse-header-text { display:flex; flex-direction:column; gap:3px; }
+.collapse-header-label { font-family:'Orbitron',monospace; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); transition:color 0.28s; }
+.collapse-header:hover .collapse-header-label { color:var(--text); }
+.spider-accent .collapse-header.open .collapse-header-label { color:var(--neon-orange); }
+.solar-accent  .collapse-header.open .collapse-header-label { color:var(--neon-green); }
+.collapse-header-sub { font-size:11px; color:var(--text-dim); opacity:0.55; font-style:italic; }
+.collapse-header.open .collapse-header-sub { display:none; }
+
+.collapse-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.collapse-chevron { width:30px; height:30px; border-radius:50%; border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; color:var(--text-dim); transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), border-color 0.28s, color 0.28s; flex-shrink:0; }
+.collapse-header.open .collapse-chevron { border-color:rgba(255,255,255,0.2); color:var(--text); }
+.spider-accent .collapse-header.open .collapse-chevron { border-color:rgba(255,107,0,0.5); color:var(--neon-orange); }
+.solar-accent  .collapse-header.open .collapse-chevron { border-color:rgba(0,255,136,0.5); color:var(--neon-green); }
+.collapse-chevron-icon { transition:transform 0.35s cubic-bezier(0.4,0,0.2,1); display:block; }
+.collapse-header.open .collapse-chevron-icon { transform:rotate(180deg); }
+
+.collapse-body { overflow:hidden; max-height:0; transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease; opacity:0; border:1px solid transparent; border-top:none; border-radius:0 0 14px 14px; }
+.collapse-body.open { max-height:5000px; opacity:1; }
+.spider-accent .collapse-body.open { border-color:rgba(255,107,0,0.25); }
+.solar-accent  .collapse-body.open { border-color:rgba(0,255,136,0.25); }
+
+.collapse-body-inner { padding:14px; }
+.collapse-body-inner .info-grid { margin-bottom:0; }
+.collapse-body-inner .steps { margin-bottom:0; }
+.collapse-body-inner .applications { margin-bottom:0; }
+.collapse-body-inner .skills-section { margin-bottom:0; }
+.collapse-body-inner .glow-divider { display:none; }
+
+/* ════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════ */
+footer { position:relative; z-index:2; border-top:1px solid var(--border); padding:16px 16px 80px; display:flex; flex-direction:column; align-items:center; gap:4px; text-align:center; background:rgba(2,8,16,0.6); backdrop-filter:blur(10px); }
+.footer-left  { font-family:'Orbitron',monospace; font-size:11px; letter-spacing:2px; color:var(--text-dim); }
+.footer-right { font-size:11px; color:var(--text-dim); }
+.footer-right span { color:var(--neon-blue); }
+
+
+/* ════════════════════════════════════════
+   ANIMATIONS
+════════════════════════════════════════ */
+@keyframes shimmer   { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+@keyframes pulse     { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+@keyframes float     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+@keyframes ringPulse { 0%{opacity:.6;transform:translate(-50%,-50%) scale(.9)} 50%{opacity:.2;transform:translate(-50%,-50%) scale(1.05)} 100%{opacity:.6;transform:translate(-50%,-50%) scale(.9)} }
+@keyframes bounce    { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+@keyframes slideIn   { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+#home-content.page-enter { animation:slideIn 0.5s ease both; }
+
+/* ════════════════════════════════════════
+   MOBILE  (max 767px)
+════════════════════════════════════════ */
+@media (max-width:767px) {
+
+  /* ── Nav: slim, logo only ── */
+  nav { height:52px; padding:0 18px; }
+  .nav-tabs { display:none; }
+  .nav-logo { font-size:10px; letter-spacing:2px; }
+
+  /* ── Show bottom tab bar ── */
+  .mobile-tabs { display:flex; }
+
+  /* ── HOME ── */
+  #home { padding:70px 20px 80px; min-height:100vh; justify-content:center; gap:0; }
+
+  .hero-eyebrow { font-size:8px; letter-spacing:4px; margin-bottom:20px; }
+  .hero-title { font-size:clamp(34px,10vw,54px); }
+  .hero-title .line2 { font-size:0.32em; letter-spacing:5px; margin-top:12px; }
+  .hero-subtitle { font-size:14px; margin:22px auto 36px; max-width:300px; }
+
+  /* Project cards: row layout on mobile */
+  .project-cards { grid-template-columns:1fr; gap:10px; margin-bottom:28px; max-width:100%; }
+  .proj-card { flex-direction:row; align-items:center; padding:16px 18px; gap:14px; border-radius:14px; }
+  .proj-card-icon { font-size:30px; margin-bottom:0; display:block; flex-shrink:0; }
+  .proj-card-title { font-size:11px; letter-spacing:1.5px; margin-bottom:4px; }
+  .proj-card-desc { font-size:11px; line-height:1.5; letter-spacing:0; }
+  .proj-card-arrow { display:block; font-size:20px; opacity:0.35; flex-shrink:0; margin-left:auto; }
+
+  /* Teacher badge: wrap gracefully */
+  .teacher-badge { padding:9px 16px; border-radius:50px; }
+  .teacher-badge span { font-size:9px; letter-spacing:1px; }
+  .teacher-badge .dot { width:7px; height:7px; }
+
+  /* ── PROJECT HERO BANNER ── */
+  /* Stack icon on top, text below — both centred */
+  .proj-hero-banner {
+    min-height:100vh; padding:60px 22px 80px;
+    display:flex; align-items:center;
+  }
+  .proj-hero-inner {
+    grid-template-columns:1fr; gap:0;
+    text-align:center;
+  }
+  .proj-hero-left { display:flex; flex-direction:column; align-items:center; order:2; }
+  .proj-hero-right { order:1; margin-bottom:24px; }
+
+  /* Icon: medium size, looks premium */
+  .proj-hero-icon-wrap { width:180px; height:180px; }
+  .big-icon { font-size:80px; }
+  .orbit-ring:nth-child(1) { width:120px; height:120px; }
+  .orbit-ring:nth-child(2) { width:165px; height:165px; }
+  .orbit-ring:nth-child(3) { width:205px; height:205px; }
+
+  /* Text hierarchy */
+  .proj-hero-number { font-size:8px; letter-spacing:2px; margin-bottom:10px; justify-content:center; }
+  .proj-hero-number::after { display:none; }
+  .proj-hero-title { font-size:clamp(38px,11vw,58px); line-height:0.95; margin-bottom:10px; }
+  .proj-hero-sub { font-size:9px; letter-spacing:3px; margin-bottom:16px; }
+  .proj-hero-desc { font-size:14px; line-height:1.75; max-width:100%; margin-bottom:20px; }
+
+  /* Pills: centred, slightly smaller */
+  .proj-hero-pills { justify-content:center; gap:7px; margin-bottom:24px; }
+  .tech-pill { font-size:8px; padding:5px 11px; }
+
+  /* Stats row: spread nicely */
+  .proj-hero-stats { gap:0; justify-content:space-around; width:100%; max-width:320px; }
+  .proj-hero-stat { text-align:center; }
+  .proj-hero-stat-num { font-size:24px; }
+  .proj-hero-stat-label { font-size:8px; }
+
+  /* Add a subtle divider between stats */
+  .proj-hero-stats .proj-hero-stat + .proj-hero-stat {
+    border-left:1px solid var(--border);
+    padding-left:20px;
+  }
+
+  .scroll-hint { display:none; }
+  .corner-deco { display:none; }
+
+  /* ── PROJECT CONTENT ── */
+  .project-page { padding:28px 14px 88px; }
+
+  /* Info blocks: single column */
+  .info-grid { grid-template-columns:1fr; gap:10px; }
+  .info-block { padding:18px 16px 18px 18px; border-radius:12px; }
+  .info-block-title { font-size:9px; letter-spacing:1.5px; margin-bottom:8px; }
+  .info-block p { font-size:13px; line-height:1.75; }
+
+  /* Steps */
+  .step { gap:12px; }
+  .step-num { width:32px; height:32px; font-size:10px; }
+  .step-title { font-size:13px; }
+  .step-desc  { font-size:12px; line-height:1.65; }
+
+  /* Applications */
+  .applications-grid { grid-template-columns:1fr 1fr; gap:8px; }
+  .app-item { padding:11px 9px; border-radius:10px; gap:7px; flex-direction:column; align-items:flex-start; }
+  .app-icon  { font-size:20px; }
+  .app-label { font-size:11px; }
+  .app-desc  { font-size:10px; line-height:1.4; }
+
+  /* Skills */
+  .skills-section { grid-template-columns:1fr 1fr; gap:8px; }
+  .skill-item { padding:16px 10px; }
+  .skill-icon { font-size:24px; margin-bottom:6px; }
+  .skill-name { font-size:7px; }
+
+  /* Collapsible headers */
+  .collapse-section { margin-bottom:8px; }
+  .collapse-header { padding:14px 16px; border-radius:12px; }
+  .collapse-header.open { border-radius:12px 12px 0 0; }
+  .collapse-body { border-radius:0 0 12px 12px; }
+  .collapse-header-icon { font-size:18px; }
+  .collapse-header-label { font-size:10px; letter-spacing:1.5px; }
+  .collapse-header-sub { font-size:10px; }
+  .collapse-header-left { gap:10px; }
+  .collapse-body-inner { padding:16px; }
+
+  /* Footer */
+  footer { flex-direction:column; gap:5px; text-align:center; padding:18px 20px 80px; }
+}
+
+/* ════════════════════════════════════════
+   VERY SMALL PHONES  (max 360px)
+════════════════════════════════════════ */
+@media (max-width:360px) {
+  .hero-title { font-size:30px; }
+  .proj-hero-title { font-size:34px; }
+  .applications-grid { grid-template-columns:1fr; }
+  .proj-hero-stats .proj-hero-stat + .proj-hero-stat { padding-left:14px; }
+}
+</style>
+</head>
+<body>
+<div class="scanlines"></div>
+
+<!-- ── TOP NAV ── -->
+<nav>
+  <div class="nav-logo">Year 9 Bradford <span>// STEM Day</span></div>
+  <ul class="nav-tabs">
+    <li><button class="active" data-tab="home"   onclick="showTab('home',this)">Home</button></li>
+    <li><button data-tab="spider" onclick="showTab('spider',this)">🕷 Spider Robot</button></li>
+    <li><button data-tab="solar"  onclick="showTab('solar',this)">🌸 Solar Flower</button></li>
+  </ul>
+</nav>
+
+<!-- ── MOBILE BOTTOM TABS ── -->
+<ul class="mobile-tabs">
+  <li><button class="active" data-tab="home"   onclick="showTab('home',this)"><span class="tab-icon">🏠</span><span class="tab-label">Home</span></button></li>
+  <li><button data-tab="spider" onclick="showTab('spider',this)"><span class="tab-icon">🕷️</span><span class="tab-label">Spider</span></button></li>
+  <li><button data-tab="solar"  onclick="showTab('solar',this)"><span class="tab-icon">🌸</span><span class="tab-label">Solar</span></button></li>
+</ul>
+
+
+<nav>
+  <div class="nav-logo">Year 9 Bradford <span>// STEM Day</span></div>
+  <ul class="nav-tabs">
+    <li><button class="active" data-tab="home"   onclick="showTab('home',this)">Home</button></li>
+    <li><button data-tab="spider" onclick="showTab('spider',this)">🕷 Spider Robot</button></li>
+    <li><button data-tab="solar"  onclick="showTab('solar',this)">🌸 Solar Flower</button></li>
+  </ul>
+</nav>
+
+<!-- ── MOBILE BOTTOM TABS ── -->
+<ul class="mobile-tabs">
+  <li><button class="active" data-tab="home"   onclick="showTab('home',this)"><span class="tab-icon">🏠</span><span class="tab-label">Home</span></button></li>
+  <li><button data-tab="spider" onclick="showTab('spider',this)"><span class="tab-icon">🕷️</span><span class="tab-label">Spider</span></button></li>
+  <li><button data-tab="solar"  onclick="showTab('solar',this)"><span class="tab-icon">🌸</span><span class="tab-label">Solar</span></button></li>
+</ul>
+
+<!-- ════════════ HOME ════════════ -->
+<section id="home" class="active">
+  <div id="home-content" class="page-enter">
+
+    <div class="hero-eyebrow">Bradford Academy · STEM Innovation Day 2026</div>
+
+    <h1 class="hero-title">
+      <span class="line1">Year 9 Bradford</span>
+      <span class="line2">Engineering The Future</span>
+    </h1>
+
+    <p class="hero-subtitle">Two student-built engineering projects. One STEM Day. Supervised by <strong>Miss Asha</strong>.</p>
+
+    <div class="project-cards">
+      <div class="proj-card spider" onclick="showTab('spider',null)">
+        <span class="proj-card-icon">🕷️</span>
+        <div class="proj-card-body">
+          <div class="proj-card-title">Spider Robot</div>
+          <div class="proj-card-desc">4-legged · 3D Printed · Servo Powered</div>
+        </div>
+        <span class="proj-card-arrow">›</span>
+      </div>
+      <div class="proj-card solar" onclick="showTab('solar',null)">
+        <span class="proj-card-icon">🌸</span>
+        <div class="proj-card-body">
+          <div class="proj-card-title">Solar Flower</div>
+          <div class="proj-card-desc">Light Tracking · Arduino · Heliotropic</div>
+        </div>
+        <span class="proj-card-arrow">›</span>
+      </div><span class="proj-card-arrow">›</span>
+      </div>
+    </div>
+
+    <div class="teacher-badge">
+      <div class="dot"></div>
+      <span>Supervised by <strong>Miss Asha</strong> · Year 9 Bradford · STEM Day 2026</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════ SPIDER ROBOT ════════════ -->
+<section id="spider">
+  <div class="proj-hero-banner spider-banner">
+    <div class="corner-deco tl" style="border-color:var(--neon-orange)"></div>
+    <div class="corner-deco tr" style="border-color:var(--neon-orange)"></div>
+    <div class="corner-deco bl" style="border-color:var(--neon-orange)"></div>
+    <div class="corner-deco br" style="border-color:var(--neon-orange)"></div>
+    <div class="proj-hero-inner">
+      <div class="proj-hero-left">
+        <div class="proj-hero-number">Project 01 · Robotics & Automation</div>
+        <h1 class="proj-hero-title">Spider<br>Robot</h1>
+        <div class="proj-hero-sub">Autonomous · Servo Motors · 3D Printed</div>
+        <p class="proj-hero-desc">A fully programmable, four-legged robot — 3D printed from scratch and wirelessly controlled via smartphone using ESP32 and Wi-Fi. Built to transport heavy materials across terrain that wheels cannot handle.</p>
+        <div class="proj-hero-pills">
+          <span class="tech-pill spider-pill">ESP32</span><span class="tech-pill spider-pill">Servo Motors</span><span class="tech-pill spider-pill">3D Printing</span><span class="tech-pill spider-pill">PLA Filament</span><span class="tech-pill spider-pill">PWM Signals</span>
+        </div>
+        <div class="proj-hero-stats">
+          <div class="proj-hero-stat"><span class="proj-hero-stat-num">4</span><span class="proj-hero-stat-label">Legs</span></div>
+          <div class="proj-hero-stat"><span class="proj-hero-stat-num">3D</span><span class="proj-hero-stat-label">Printed Frame</span></div>
+          <div class="proj-hero-stat"><span class="proj-hero-stat-num">ESP32</span><span class="proj-hero-stat-label">Microcontroller</span></div>
+        </div>
+      </div>
+      <div class="proj-hero-right">
+        <div class="proj-hero-icon-wrap">
+          <div class="orbit-ring"></div><div class="orbit-ring"></div><div class="orbit-ring"></div>
+          <span class="big-icon">🕷️</span>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-hint">Scroll to explore</div>
+  </div>
+  <div class="project-page spider-accent">
+
+    <div class="collapse-section">
+      <div class="collapse-header" onclick="toggleCollapse(this)"><div class="collapse-header-left"><span class="collapse-header-icon">🔩</span><div class="collapse-header-text"><span class="collapse-header-label">About the Project</span><span class="collapse-header-sub">Frame, motors, wiring & code</span></div></div><div class="collapse-right"><div class="collapse-chevron"><span class="collapse-chevron-icon">▾</span></div></div></div>
+      <div class="collapse-body">
+        <div class="collapse-body-inner">
+          <div class="info-grid">
+            <div class="info-block"><div class="info-block-title spider-color"><span class="icon">🖨️</span> Frame & Body Construction</div><p>The entire body and all four legs were <strong>3D printed</strong> using PLA filament. Each part was designed in CAD software to fit precise engineering tolerances. The modular design allows individual legs to be replaced without rebuilding the full frame. The body houses the electronics, wiring, and battery pack in a compact, lightweight shell.</p></div>
+            <div class="info-block"><div class="info-block-title spider-color"><span class="icon">⚙️</span> Servo Motor System</div><p>Each of the four legs is powered by <strong>multiple servo motors</strong>, acting as joints that mimic natural spider movement. The servos receive <strong>PWM (Pulse Width Modulation)</strong> signals from the ESP32, which precisely control the angle of each joint — enabling smooth, coordinated walking motion including forward, backward, and turning.</p></div>
+            <div class="info-block"><div class="info-block-title spider-color"><span class="icon">📡</span> ESP32 Controller</div><p>The brain of the robot is an <strong>ESP32 microcontroller</strong> — a powerful chip that handles all the programming logic. The ESP32 sends precise control signals to each servo motor, coordinating the movement of all four legs simultaneously to achieve smooth, balanced motion.</p></div>
+            <div class="info-block"><div class="info-block-title spider-color"><span class="icon">💡</span> Programming & Logic</div><p>The ESP32 was programmed using <strong>C++ via the Arduino IDE</strong>. Custom code handles servo timing and synchronisation, coordinating leg movement in the correct sequence, and ensuring all four legs respond accurately and smoothly to produce stable walking motion.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse-section">
+      <div class="collapse-header" onclick="toggleCollapse(this)"><div class="collapse-header-left"><span class="collapse-header-icon">⚡</span><div class="collapse-header-text"><span class="collapse-header-label">How It Works</span><span class="collapse-header-sub">5-step build & control guide</span></div></div><div class="collapse-right"><div class="collapse-chevron"><span class="collapse-chevron-icon">▾</span></div></div></div>
+      <div class="collapse-body">
+        <div class="collapse-body-inner">
+          <div class="steps">
+            <div class="step"><div class="step-num">01</div><div class="step-body"><div class="step-title">Design & 3D Print the Frame</div><div class="step-desc">All body parts including the chassis, hip joints, and leg segments were designed and 3D printed — rigid enough to carry load yet lightweight enough for the servos to move efficiently.</div></div></div>
+            <div class="step"><div class="step-num">02</div><div class="step-body"><div class="step-title">Assemble the Servo Joints</div><div class="step-desc">Servo motors are installed at each joint of every leg, carefully calibrated so each servo's centre position aligns with the natural resting stance of the robot.</div></div></div>
+            <div class="step"><div class="step-num">03</div><div class="step-body"><div class="step-title">Wire the ESP32 Controller</div><div class="step-desc">All servo signal wires are routed to the ESP32's GPIO pins. A power distribution board supplies regulated voltage to the servos separately to prevent resets.</div></div></div>
+            <div class="step"><div class="step-num">04</div><div class="step-body"><div class="step-title">Upload the Programme</div><div class="step-desc">Custom firmware is uploaded to the ESP32 over USB. The code initialises all servo connections and enters a control loop that coordinates leg movement sequences to produce forward, backward, and turning motion.</div></div></div>
+            <div class="step"><div class="step-num">05</div><div class="step-body"><div class="step-title">Power On & Run</div><div class="step-desc">The robot is powered on and the ESP32 immediately begins executing its programmed movement sequences. The legs move in a coordinated pattern, propelling the robot forward with stable, balanced motion.</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse-section">
+      <div class="collapse-header" onclick="toggleCollapse(this)"><div class="collapse-header-left"><span class="collapse-header-icon">🌍</span><div class="collapse-header-text"><span class="collapse-header-label">Real-World Applications</span><span class="collapse-header-sub">Where this technology is used</span></div></div><div class="collapse-right"><div class="collapse-chevron"><span class="collapse-chevron-icon">▾</span></div></div></div>
+      <div class="collapse-body">
+        <div class="collapse-body-inner">
+          <div class="applications">
+            <div class="applications-grid">
+              <div class="app-item"><span class="app-icon">🏗️</span><div><div class="app-label">Construction Sites</div><div class="app-desc">Transports materials across uneven terrain where wheeled robots fail.</div></div></div>
+              <div class="app-item"><span class="app-icon">🔍</span><div><div class="app-label">Search & Rescue</div><div class="app-desc">Navigates rubble and disaster zones to locate survivors safely.</div></div></div>
+              <div class="app-item"><span class="app-icon">🌋</span><div><div class="app-label">Hazardous Environments</div><div class="app-desc">Operates in volcanic, radioactive, or toxic zones hostile to humans.</div></div></div>
+              <div class="app-item"><span class="app-icon">🏭</span><div><div class="app-label">Industrial Automation</div><div class="app-desc">Automates transport and inspection tasks in factories and warehouses.</div></div></div>
+              <div class="app-item"><span class="app-icon">🪖</span><div><div class="app-label">Military & Defence</div><div class="app-desc">Remote reconnaissance in hostile territory without endangering soldiers.</div></div></div>
+              <div class="app-item"><span class="app-icon">🌿</span><div><div class="app-label">Agricultural Monitoring</div><div class="app-desc">Traverses crop fields for soil sampling and precision care.</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse-section">
+      <div class="collapse-header" onclick="toggleCollapse(this)"><div class="collapse-header-left"><span class="collapse-header-icon">🎓</span><div class="collapse-header-text"><span class="collapse-header-label">STEM Skills</span><span class="collapse-header-sub">What we learned & applied</span></div></div><div class="collapse-right"><div class="collapse-chevron"><span class="collapse-chevron-icon">▾</span></div></div></div>
+      <div class="collapse-body">
+        <div class="collapse-body-inner">
+          <div class="skills-section">
+            <div class="skill-item"><div class="skill-icon">🖨️</div><div class="skill-name">3D Design & Printing</div></div>
+            <div class="skill-item"><div class="skill-icon">💻</div><div class="skill-name">C++ Programming</div></div>
+            <div class="skill-item"><div class="skill-icon">⚡</div><div class="skill-name">Electronics Wiring</div></div>
+            <div class="skill-item"><div class="skill-icon">📡</div><div class="skill-name">Wireless Networking</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════ SOLAR FLOWER ════════════ -->
+<section id="solar">
+  <div class="proj-hero-banner solar-banner">
+    <div class="corner-deco tl" style="border-color:var(--neon-green)"></div>
+    <div class="corner-deco tr" style="border-color:var(--neon-green)"></div>
+    <div class="corner-deco bl" style="border-color:var(--neon-green)"></div>
+    <div class="corner-deco br" style="border-color:var(--neon-green)"></div>
+    <div class="proj-hero-inner">
+      <div class="proj-hero-left">
+        <div class="proj-hero-number">Project 02 · Renewable Energy & Smart Systems</div>
+        <h1 class="proj-hero-title">Solar<br>Flower</h1>
+        <div class="proj-hero-sub">Light Tracking · Arduino · Heliotropic</div>
+        <p class="proj-hero-desc">A solar-tracking device inspired by nature — reads live voltage data from multiple solar panels and automatically rotates towards the brightest light source, maximising energy output just like a real sunflower.</p>
+        <div class="proj-hero-pills">
+          <span class="tech-pill solar-pill">Arduino</span><span class="tech-pill solar-pill">Solar Panels</span><span class="tech-pill solar-pill">Servo Motors</span><span class="tech-pill solar-pill">Voltage Detection</span><span class="tech-pill solar-pill">ADC Readings</span><span class="tech-pill solar-pill">PWM Control</span>
+        </div>
+        <div class="proj-hero-stats">
+          <div class="proj-hero-stat"><span class="proj-hero-stat-num">360°</span><span class="proj-hero-stat-label">Rotation</span></div>
+          <div class="proj-hero-stat"><span class="proj-hero-stat-num">Real</span><span class="proj-hero-stat-label">Time Tracking</span></div>
+          <div class="proj-hero-stat"><span class="proj-hero-stat-num">+40%</span><span class="proj-hero-stat-label">Energy Gain</span></div>
+        </div>
+      </div>
+      <div class="proj-hero-right">
+        <div class="proj-hero-icon-wrap">
+          <div class="orbit-ring"></div><div class="orbit-ring"></div><div class="orbit-ring"></div>
+          <span class="big-icon">🌸</span>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-hint">Scroll to explore</div>
+  </div>
+  <div class="project-page solar-accent">
+
+    <div class="collapse-section">
+      <div class="collapse-header" onclick="toggleCollapse(this)"><div class="collapse-header-left"><span class="collapse-header-icon">🌱</span><div class="collapse-header-text"><span class="collapse-header-label">About the Project</span><span class="collapse-header-sub">Panels, servos, Arduino & tracking</span></div></div><div class="collapse-right"><div class="collapse-chevron"><span class="collapse-chevron-icon">▾</span></div></div></div>
+      <div class="collapse-body">
+        <div class="collapse-body-inner">
+          <div class="info-grid">
+            <div class="info-block"><div class="info-block-title solar-color"><span class="icon">☀️</span> Light Detection via Solar Panels</div><p>The Solar Flower uses <strong>multiple small solar panels</strong> on each petal to detect light intensity. When light hits a panel, it generates a measurable voltage — <strong>the stronger the light, the higher the voltage</strong>. The Arduino reads these values using its ADC pins, determining exactly which direction the brightest light is coming from.</p></div>
+            <div class="info-block"><div class="info-block-title solar-color"><span class="icon">⚙️</span> Servo Motor Movement</div><p>Once the Arduino identifies which panel has the most light, it sends a <strong>PWM signal</strong> to the servo motors to physically rotate the flower towards that direction — allowing continuous tracking just like real sunflowers through a biological process called <em>heliotropism</em>.</p></div>
+            <div class="info-block"><div class="info-block-title solar-color"><span class="icon">🧠</span> Arduino Programming Logic</div><p>The Arduino code runs a continuous comparison loop: read all solar panel voltages, identify the highest, calculate the difference from the current position, then adjust the servo. A <strong>deadzone threshold</strong> is built in — small differences are ignored to prevent constant jittering and preserve motor life.</p></div>
+            <div class="info-block"><div class="info-block-title solar-color"><span class="icon">⚡</span> Energy Efficiency Principle</div><p>Solar panels produce the most electricity when facing the light source <strong>directly at 90 degrees</strong>. Even a 30-degree angle can reduce efficiency by up to 50%. The Solar Flower always maintains the optimal angle — meaning <strong>significantly more energy harvested</strong> throughout the day compared to a fixed panel.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse-section">
+      <div class="collapse-header" onclick="toggleCollapse(this)"><div class="collapse-header-left"><span class="collapse-header-icon">⚡</span><div class="collapse-header-text"><span class="collapse-header-label">How It Works</span><span class="collapse-header-sub">5-step light-tracking process</span></div></div><div class="collapse-right"><div class="collapse-chevron"><span class="collapse-chevron-icon">▾</span></div></div></div>
+      <div class="collapse-body">
+        <div class="collapse-body-inner">
+          <div class="steps">
+            <div class="step"><div class="step-num">01</div><div class="step-body"><div class="step-title">Solar Panels Generate Voltage Readings</div><div class="step-desc">Each petal has a solar panel that generates a voltage proportional to the light intensity it receives, fed as analogue signals to the Arduino.</div></div></div>
+            <div class="step"><div class="step-num">02</div><div class="step-body"><div class="step-title">Arduino Reads & Compares Values</div><div class="step-desc">The Arduino's ADC reads all panel values simultaneously, converting them to digital numbers it can compare — hundreds of times per second.</div></div></div>
+            <div class="step"><div class="step-num">03</div><div class="step-body"><div class="step-title">Brightest Direction Identified</div><div class="step-desc">The code identifies which panel has the highest voltage. If the difference exceeds the deadzone threshold, a movement command is triggered.</div></div></div>
+            <div class="step"><div class="step-num">04</div><div class="step-body"><div class="step-title">Servo Motors Rotate the Flower</div><div class="step-desc">A PWM signal is sent to the servo motor, rotating the flower head until all panel voltages are balanced — meaning direct alignment with the light.</div></div></div>
+            <div class="step"><div class="step-num">05</div><div class="step-body"><div class="step-title">Continuous Real-Time Tracking</div><div class="step-desc">As the light source moves — like the sun across the sky — the flower continuously re-evaluates and adjusts, achieving maximum energy harvest all day automatically.</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse-section">
+      <div class="collapse-header" onclick="toggleCollapse(this)"><div class="collapse-header-left"><span class="collapse-header-icon">🌍</span><div class="collapse-header-text"><span class="collapse-header-label">Real-World Applications</span><span class="collapse-header-sub">Solar farms, satellites & more</span></div></div><div class="collapse-right"><div class="collapse-chevron"><span class="collapse-chevron-icon">▾</span></div></div></div>
+      <div class="collapse-body">
+        <div class="collapse-body-inner">
+          <div class="applications">
+            <div class="applications-grid">
+              <div class="app-item"><span class="app-icon">🌞</span><div><div class="app-label">Solar Farms</div><div class="app-desc">Tracking panels generate up to 40% more electricity than fixed arrays.</div></div></div>
+              <div class="app-item"><span class="app-icon">🏠</span><div><div class="app-label">Residential Energy</div><div class="app-desc">Smart rooftop panels that follow the sun to power homes more efficiently.</div></div></div>
+              <div class="app-item"><span class="app-icon">🛰️</span><div><div class="app-label">Space Satellites</div><div class="app-desc">Satellites use solar tracking to keep panels pointed at the sun.</div></div></div>
+              <div class="app-item"><span class="app-icon">🌿</span><div><div class="app-label">Green Infrastructure</div><div class="app-desc">Solar-powered public infrastructure that self-optimises for energy.</div></div></div>
+              <div class="app-item"><span class="app-icon">🌊</span><div><div class="app-label">Off-Grid Locations</div><div class="app-desc">Remote areas rely on maximised solar collection for power.</div></div></div>
+              <div class="app-item"><span class="app-icon">🎓</span><div><div class="app-label">STEM Education</div><div class="app-desc">A hands-on demonstration of renewable energy engineering.</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse-section">
+      <div class="collapse-header" onclick="toggleCollapse(this)"><div class="collapse-header-left"><span class="collapse-header-icon">🎓</span><div class="collapse-header-text"><span class="collapse-header-label">STEM Skills</span><span class="collapse-header-sub">What we learned & applied</span></div></div><div class="collapse-right"><div class="collapse-chevron"><span class="collapse-chevron-icon">▾</span></div></div></div>
+      <div class="collapse-body">
+        <div class="collapse-body-inner">
+          <div class="skills-section">
+            <div class="skill-item"><div class="skill-icon">☀️</div><div class="skill-name">Renewable Energy</div></div>
+            <div class="skill-item"><div class="skill-icon">💻</div><div class="skill-name">Arduino Programming</div></div>
+            <div class="skill-item"><div class="skill-icon">⚡</div><div class="skill-name">Circuit Design</div></div>
+            <div class="skill-item"><div class="skill-icon">📐</div><div class="skill-name">Sensor Integration</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<footer>
+  <div class="footer-left">Year 9 Bradford · STEM Day 2026</div>
+  <div class="footer-right">Supervised by <span>Miss Asha</span> · Bradford Academy</div>
+</footer>
+
+<script>
+  const accentColors = { home:'rgba(0,60,120,0.25)', spider:'rgba(120,40,0,0.22)', solar:'rgba(0,100,50,0.22)' };
+  const bodyAccentStyle = document.createElement('style');
+  document.head.appendChild(bodyAccentStyle);
+
+  function showTab(tabId) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('button[data-tab]').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    document.querySelectorAll(`button[data-tab="${tabId}"]`).forEach(b => b.classList.add('active'));
+    if (tabId === 'home') {
+      const el = document.getElementById('home-content');
+      el.classList.remove('page-enter');
+      void el.offsetWidth;
+      el.classList.add('page-enter');
+    }
+    const color = accentColors[tabId] || accentColors.home;
+    bodyAccentStyle.textContent = `body::after{background:radial-gradient(ellipse 80% 60% at 50% 0%,${color} 0%,transparent 70%)!important;}`;
+    window.scrollTo({top:0,behavior:'instant'});
+  }
+
+  function toggleCollapse(header) {
+    const body = header.nextElementSibling;
+    const isOpen = header.classList.contains('open');
+    header.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+  }
+</script>
+</body>
+</html>
